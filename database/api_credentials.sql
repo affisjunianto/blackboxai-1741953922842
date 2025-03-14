@@ -1,0 +1,12 @@
+-- API Credentials table
+CREATE TABLE IF NOT EXISTS api_credentials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    api_key VARCHAR(64) NOT NULL,
+    api_secret VARCHAR(64) NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_api_key (api_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
