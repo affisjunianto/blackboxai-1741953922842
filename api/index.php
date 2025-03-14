@@ -17,7 +17,7 @@ include_once __DIR__ . '/../includes/sidebar.php';
                 <h5 class="card-title">API Documentation</h5>
                 
                 <h6 class="mt-4">Authentication</h6>
-                <p>API access requires your username and password in the request body.</p>
+                <p>API access requires username and password in the request body.</p>
                 
                 <h6 class="mt-4">Check Balance API</h6>
                 <p>Endpoint to check user balance. Agents can only check their own balance.</p>
@@ -25,7 +25,7 @@ include_once __DIR__ . '/../includes/sidebar.php';
                 <div class="mb-3">
                     <strong>Endpoint:</strong>
                     <div class="bg-light p-2 rounded">
-                        <code>POST /api/balance.php</code>
+                        <code>POST /api/check_balance.php</code>
                     </div>
                 </div>
 
@@ -89,7 +89,7 @@ $(document).ready(function() {
         if (!password) return;
 
         $.ajax({
-            url: '/api/balance.php',
+            url: '/api/check_balance.php',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify({
