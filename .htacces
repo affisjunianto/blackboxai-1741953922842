@@ -1,0 +1,20 @@
+# Deny access to files that may contain sensitive information
+<FilesMatch "(?i)\.(php|php3?|phtml|env)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
+
+# Allow access to image files
+<FilesMatch "(?i)\.(gif|jpe?g|png|ico|svg)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Prevent directory listing
+Options -Indexes
+
+# Prevent Apache from serving .htaccess files
+<Files .htaccess>
+    Order allow,deny
+    Deny from all
+</Files>
