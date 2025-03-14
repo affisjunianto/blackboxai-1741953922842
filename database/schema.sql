@@ -8,9 +8,10 @@ CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) UNIQUE,
-    role ENUM('admin', 'agent', 'sub_agent') NOT NULL,
+    role ENUM('admin', 'agent') NOT NULL,
     balance BIGINT DEFAULT 0,
     parent_id INT,
+    status ENUM('active', 'inactive') DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (parent_id) REFERENCES users(id) ON DELETE SET NULL
@@ -24,10 +25,7 @@ CREATE TABLE IF NOT EXISTS agent_ip_whitelist (
     description VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agent_id) REFERENCES users(id) ON DELETE CASCADE,
-    UNIQUE KEY unique_agent_ip (agent_id, ip_address),
-    CONSTRAINT check_agent_role CHECK (
-        agent_id IN (SELECT id FROM users WHERE role = 'agent')
-    )
+    UNIQUE KEY unique_agent_ip (agent_id, ip_address)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Transactions table
@@ -55,6 +53,16 @@ CREATE TABLE IF NOT EXISTS api_logs (
     response_data TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (agent_id) REFERENCES users(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Activity logs
+CREATE TABLE IF NOT EXISTS activity_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action VARCHAR(255) NOT NULL,
+    details TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Insert default admin user (password: admin123)
